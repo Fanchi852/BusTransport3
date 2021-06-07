@@ -17,7 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+
+import java.util.*;
 
 import static com.example.BusTransport3.controller.Response.NOT_FOUND;
 
@@ -47,12 +48,43 @@ public class BusController {
             @ApiResponse(responseCode = "200", description = "Existe el autobus", content = @Content(schema = @Schema(implementation = Bus.class))),
             @ApiResponse(responseCode = "404", description = "El autobus no existe", content = @Content(schema = @Schema(implementation = Response.class)))
     })
-    @GetMapping(value = "/buses/{id}", produces = "application/json")
+    @GetMapping(value = "/busesByid={id}", produces = "application/json")
     public ResponseEntity<Bus> getBusById(@PathVariable Integer id) {
         Bus bus = busservice.findById(id)
                 .orElseThrow(() -> new BusNotFoundException(id));
-
         return new ResponseEntity<>(bus, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Obtiene un autobus por su id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Existe el autobus", content = @Content(schema = @Schema(implementation = Bus.class))),
+            @ApiResponse(responseCode = "404", description = "El autobus no existe", content = @Content(schema = @Schema(implementation = Response.class)))
+    })
+    @GetMapping(value = "/busescostume/capacity={capacity},code={code},consumption={consumption}", produces = "application/json")
+    public ResponseEntity<ArrayList<Bus>> getBusByCapacityandConsumptionandcode(@PathVariable(required = false) Integer capacity, @PathVariable(required = false) String code, @PathVariable(required = false) Float consumption) {
+        Set<Bus> set_aux = new HashSet<>();
+        ArrayList<Bus> res = new ArrayList<>();
+
+        if (capacity != null){
+            busservice.findByCapacity(capacity).forEach(set_aux::add);
+        }
+        if (code != null){
+            busservice.findByCode(code).forEach(set_aux::add);
+        }
+        if (consumption != null){
+            busservice.findByConsumption(consumption).forEach(set_aux::add);
+        }else{
+            new BusNotFoundException();
+        }
+        if (!set_aux.isEmpty()) {
+            res.addAll(set_aux);
+            for (Bus bus : set_aux) {
+                if (!bus.getCapacity().equals(capacity) && capacity != null || !bus.getCode().equals(code) && code != null || !bus.getConsumption().equals(consumption) && consumption != null) {
+                    res.remove(bus);
+                }
+            }
+        }
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
 
@@ -65,5 +97,4 @@ public class BusController {
         logger.error(bnfe.getMessage(), bnfe);
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
-
 }
