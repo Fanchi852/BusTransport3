@@ -24,8 +24,8 @@ public class Passenger {
     @Column
     private Boolean premium;
 
-    @Schema(description = "fecha en la que el cliente obtubo el bono premium", example = "25/01/1999 17:25:00", required = false)
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+    @Schema(description = "fecha en la que el cliente obtubo el bono premium", example = "2015-01-01", required = false)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "inscription_date")
     private LocalDate inscriptiondate;
 

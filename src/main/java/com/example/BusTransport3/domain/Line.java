@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.sql.Date;
 
 @Data
@@ -23,6 +24,7 @@ public class Line {
 
     @Schema(description = "nombre de la linea", example = "Jarazmín - El Palo", required = true)
     @Column(unique = true)
+    @NotEmpty(message = "el codigo del autobus es obligatorio")
     private String name;
 
     @Schema(description = "largo del recorrido de la linea en km", example = "68,42", required = true)
@@ -33,8 +35,8 @@ public class Line {
     @Column
     private Boolean acctive;
 
-    @Schema(description = "", example = "25/01/1999 17:25:00", required = true)
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+    @Schema(description = "", example = "2015-01-01", required = true)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column
     private Date creation;
 
