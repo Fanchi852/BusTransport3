@@ -68,6 +68,8 @@ public class BusController {
         Set<Bus> set_aux = new HashSet<>();
         ArrayList<Bus> res = new ArrayList<>();
 
+        code = code.equals("") ? null : code;
+
         if (capacity != null){
             busservice.findByCapacity(capacity).forEach(set_aux::add);
         }
@@ -79,6 +81,8 @@ public class BusController {
         }else{
             new BusNotFoundException();
         }
+        System.out.println("esta es la lista auxiliar: " + set_aux.toString());
+        System.out.println();
         if (!set_aux.isEmpty()) {
             res.addAll(set_aux);
             for (Bus bus : set_aux) {
@@ -87,8 +91,11 @@ public class BusController {
                 }
             }
         }
+        System.out.println("esta es la lista de respuesta: " + res.toString());
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
+
+
 
     @Operation(summary = "Almacena un autobus")
     @ApiResponses(value = {
@@ -134,7 +141,19 @@ public class BusController {
         return new ResponseEntity<>(busservice.save(bus), HttpStatus.CREATED);
     }
 
-
+    @Operation(summary = "Elimina un autobus")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se elimina el autobus", content = @Content(schema = @Schema(implementation = Response.class))),
+            @ApiResponse(responseCode = "404", description = "El autobus no existe", content = @Content(schema = @Schema(implementation = Response.class)))
+    })
+    @DeleteMapping(value = "/buses/{id}", produces = "application/json")
+    public ResponseEntity<Response> deleteBus(@PathVariable Integer id) {
+        busservice.findById(id)
+                .orElseThrow(() -> new BusNotFoundException(id));
+        System.out.println("esta es la id: " +id);
+        busservice.deleteById(id);
+        return new ResponseEntity<>(Response.correctResponse(), HttpStatus.OK);
+    }
 
 
     @ExceptionHandler(BusNotFoundException.class)
