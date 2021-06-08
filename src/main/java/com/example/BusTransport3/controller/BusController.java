@@ -34,7 +34,7 @@ public class BusController {
     @Autowired
     private BusService busservice;
 
-    @Operation(summary = "Obtiene el listado de productos")
+    @Operation(summary = "Obtiene el listado de Autobuses")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Listado de autobuses",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = Bus.class)))),
@@ -81,8 +81,6 @@ public class BusController {
         }else{
             new BusNotFoundException();
         }
-        System.out.println("esta es la lista auxiliar: " + set_aux.toString());
-        System.out.println();
         if (!set_aux.isEmpty()) {
             res.addAll(set_aux);
             for (Bus bus : set_aux) {
@@ -91,11 +89,8 @@ public class BusController {
                 }
             }
         }
-        System.out.println("esta es la lista de respuesta: " + res.toString());
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
-
-
 
     @Operation(summary = "Almacena un autobus")
     @ApiResponses(value = {
@@ -105,7 +100,6 @@ public class BusController {
     @RequestMapping(value = "/buses", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<Bus> addBus(@RequestBody Bus bus){
         logger.info("estamos para añadir un bus: "+ bus.toString());
-        System.out.println(busservice.findByCode(bus.getCode()).toString());
         if (!busservice.findByCode(bus.getCode()).isEmpty()){
             throw new BusAlreadyExists();
         }
@@ -120,7 +114,6 @@ public class BusController {
     })
     @PatchMapping(value = "/buses/{id}/change-code", produces = "application/json")
     public ResponseEntity<Bus> modifybusCode(@PathVariable Integer id, @RequestBody String code) {
-        System.out.println("id es: " + id + ", y el code es: " + code);
         Bus bus = busservice.findById(id)
                 .orElseThrow(() -> new BusNotFoundException(id));
         bus.setCode(code);
@@ -132,7 +125,7 @@ public class BusController {
             @ApiResponse(responseCode = "200", description = "Se actualizo el autobus", content = @Content(schema = @Schema(implementation = Bus.class))),
             @ApiResponse(responseCode = "404", description = "El autobus no existe", content = @Content(schema = @Schema(implementation = Response.class)))
     })
-    @PostMapping(value = "/modifybus", produces = "application/json", consumes = "application/json")
+    @PutMapping(value = "/buses", produces = "application/json", consumes = "application/json")
     public ResponseEntity<Bus> modifyBus(@RequestBody Bus bus){
         Integer id = bus.getId();
         busservice.findById(id)
@@ -150,7 +143,6 @@ public class BusController {
     public ResponseEntity<Response> deleteBus(@PathVariable Integer id) {
         busservice.findById(id)
                 .orElseThrow(() -> new BusNotFoundException(id));
-        System.out.println("esta es la id: " +id);
         busservice.deleteById(id);
         return new ResponseEntity<>(Response.correctResponse(), HttpStatus.OK);
     }

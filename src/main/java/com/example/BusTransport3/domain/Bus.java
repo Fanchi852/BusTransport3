@@ -30,7 +30,7 @@ public class Bus {
     @Column(name = "double_bus")
     private Boolean doublebus;
 
-    @Schema(description = "fecha de adquisicion de autobus", example = "25/01/1999 17:25:00", required = true)
+    @Schema(description = "fecha de adquisicion de autobus", example = "2015-01-01", required = true)
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "buy_date")
     private LocalDate buydate;

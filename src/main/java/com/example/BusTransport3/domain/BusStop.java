@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
 @Data
@@ -24,6 +25,7 @@ public class BusStop {
     @Schema(description = "Nombre de la parada", example = "Atocha", required = true)
     @NotBlank
     @Column
+    @NotEmpty(message = "el codigo del autobus es obligatorio")
     private String name;
 
     @Schema(description = "cantidad de asientos de la parada", example = "5", required = true)
@@ -34,8 +36,8 @@ public class BusStop {
     @Column
     private Float size;
 
-    @Schema(description = "fecha de la construccion de la parada", example = "25/01/1999 17:25:00", required = true)
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+    @Schema(description = "fecha de la construccion de la parada", example = "2015-01-01", required = true)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column
     private LocalDate creation;
 

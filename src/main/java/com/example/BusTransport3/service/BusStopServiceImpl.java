@@ -38,7 +38,7 @@ public class BusStopServiceImpl implements BusStopService{
 
     @Override
     public void deleteById(Integer id) {
-
+        busstoprepository.deleteById(id);
     }
 
     @Override
