@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
 @Data
@@ -22,6 +23,7 @@ public class Bus {
 
     @Schema(description = "ccodigo de identificacion del autobus", example = "E-11", required = true)
     @Column
+    @NotEmpty(message = "el codigo del autobus es obligatorio")
     private String code;
 
     @Schema(description = "identifica el autobus como uno de cuerpo simple o cuerpo doble, sera tru si es doble false si es simple", example = "true", required = true)
