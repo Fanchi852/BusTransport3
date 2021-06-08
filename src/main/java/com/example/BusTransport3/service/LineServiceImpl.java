@@ -36,11 +36,6 @@ public class LineServiceImpl implements LineService{
     }
 
     @Override
-    public Line modifyLine(Line line) {
-        return linerepository.findById(line.getId()).get();
-    }
-
-    @Override
     public void deleteById(Integer id) {
         linerepository.deleteById(id);
     }

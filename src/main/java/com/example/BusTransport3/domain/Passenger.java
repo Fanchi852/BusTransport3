@@ -24,21 +24,21 @@ public class Passenger {
     @Column
     private Boolean premium;
 
-    @Schema(description = "fecha en la que el cliente obtubo el bono premium", example = "2015-01-01", required = false)
+    @Schema(description = "fecha en la que el cliente obtubo el bono premium", example = "2015-01-01", required = true)
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "inscription_date")
     private LocalDate inscriptiondate;
 
-    @Schema(description = "nombre del cliente", example = "Francisco Jesus Moya Olivares", required = false)
+    @Schema(description = "nombre del cliente", example = "Francisco Jesus Moya Olivares", required = true)
     @Column
     private String name;
 
-    @Schema(description = "edad del cliente a fecha de obtencion del bono premium", example = "26", required = false)
+    @Schema(description = "edad del cliente a fecha de obtencion del bono premium", example = "26", required = true)
     @Column
-    private Integer edad;
+    private Integer age;
 
-    @Schema(description = "distancia entre la casa del cliente y la parada mas cercana", example = "25.4", required = false)
-    @Column(name = "distance_between_home_Stopbus")
+    @Schema(description = "distancia entre la casa del cliente y la parada mas cercana", example = "25.4", required = true)
+    @Column(name = "distance_between_home_BusStop")
     private Float distancebetweenhomestopbus;
 /*
     @OneToMany(mappedBy = "passenger")

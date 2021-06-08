@@ -26,17 +26,17 @@ public class PassengerServiceImpl implements PassengerService{
     }
 
     @Override
+    public Optional<Passenger> findByName(String name) {
+        return passengerrepository.findByName(name);
+    }
+
+    @Override
     public Passenger save(Passenger passenger) {
         return passengerrepository.save(passenger);
     }
 
     @Override
-    public Passenger modifyPassenger(Passenger passenger) {
-        return passengerrepository.findById(passenger.getId()).get();
-    }
-
-    @Override
-    public void deleteById(Integer id) {}
+    public void deleteById(Integer id) {passengerrepository.deleteById(id);}
 
     @Override
     public void deleteAll() {}

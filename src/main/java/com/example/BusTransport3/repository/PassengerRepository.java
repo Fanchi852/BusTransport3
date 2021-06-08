@@ -12,6 +12,7 @@ public interface PassengerRepository extends CrudRepository<Passenger,Integer> {
 
     ArrayList<Passenger> findAll();
     Optional<Passenger> findById(Integer id);
+    Optional<Passenger> findByName(String name);
     Passenger save(Passenger passenger);
     void deleteById(Integer id);
     void deleteAll();
