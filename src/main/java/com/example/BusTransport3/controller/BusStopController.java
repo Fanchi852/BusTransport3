@@ -26,10 +26,10 @@ import static com.example.BusTransport3.controller.Response.CONFLICT;
 import static com.example.BusTransport3.controller.Response.NOT_FOUND;
 
 @RestController
-@Tag(name = "Autobuses", description = "Listado de autobuses")
+@Tag(name = "Paradas de Autobus", description = "Listado de autobuses")
 public class BusStopController {
 
-    private final Logger logger = LoggerFactory.getLogger(BusController.class);
+    private final Logger logger = LoggerFactory.getLogger(BusStopController.class);
 
     @Autowired
     private BusStopService busstopservice;
