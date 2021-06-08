@@ -14,7 +14,6 @@ public interface LineService {
     Optional<Line> findById(Integer id);
     Set<Line> findByName(String name);
     Line save(Line line);
-    Line modifyLine(Line line);
     void deleteById(Integer id);
     void deleteAll();
     long count();
