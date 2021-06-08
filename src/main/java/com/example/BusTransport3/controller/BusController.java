@@ -1,6 +1,7 @@
 package com.example.BusTransport3.controller;
 
 import com.example.BusTransport3.domain.Bus;
+import com.example.BusTransport3.exception.BusAlreadyExists;
 import com.example.BusTransport3.exception.BusNotFoundException;
 import com.example.BusTransport3.service.BusService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+import static com.example.BusTransport3.controller.Response.CONFLICT;
 import static com.example.BusTransport3.controller.Response.NOT_FOUND;
 
 @RestController
@@ -87,7 +90,21 @@ public class BusController {
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
-
+    @Operation(summary = "Almacena un autobus")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Autobus almacenado", content = @Content(schema = @Schema(implementation = Bus.class))),
+            @ApiResponse(responseCode = "409", description = "Autobus ya existe en la base de datos", content = @Content(schema = @Schema(implementation = Response.class)))
+    })
+    @RequestMapping(value = "/buses", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<Bus> addBus(@RequestBody Bus bus){
+        logger.info("estamos para añadir un bus: "+ bus.toString());
+        System.out.println(busservice.findByCode(bus.getCode()).toString());
+        if (!busservice.findByCode(bus.getCode()).isEmpty()){
+            throw new BusAlreadyExists();
+        }
+        logger.info(bus.toString());
+        return new ResponseEntity<>(busservice.save(bus), HttpStatus.CREATED);
+    }
 
     @ExceptionHandler(BusNotFoundException.class)
     @ResponseBody
@@ -96,5 +113,13 @@ public class BusController {
         Response response = Response.errorResonse(NOT_FOUND, bnfe.getMessage());
         logger.error(bnfe.getMessage(), bnfe);
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(BusAlreadyExists.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<Response> handleException(BusAlreadyExists bfe) {
+        Response response = Response.errorResonse(CONFLICT, bfe.getMessage());
+        logger.error(bfe.getMessage(), bfe);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 }
