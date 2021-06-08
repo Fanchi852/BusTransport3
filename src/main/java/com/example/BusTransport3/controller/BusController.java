@@ -106,6 +106,37 @@ public class BusController {
         return new ResponseEntity<>(busservice.save(bus), HttpStatus.CREATED);
     }
 
+    @Operation(summary = "actualiza el codigo un autobus")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se actualizo el codigo del autobus", content = @Content(schema = @Schema(implementation = Bus.class))),
+            @ApiResponse(responseCode = "404", description = "El autobus no existe", content = @Content(schema = @Schema(implementation = Response.class)))
+    })
+    @PatchMapping(value = "/buses/{id}/change-code", produces = "application/json")
+    public ResponseEntity<Bus> modifybusCode(@PathVariable Integer id, @RequestBody String code) {
+        System.out.println("id es: " + id + ", y el code es: " + code);
+        Bus bus = busservice.findById(id)
+                .orElseThrow(() -> new BusNotFoundException(id));
+        bus.setCode(code);
+        return new ResponseEntity<>(busservice.save(bus), HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "actualiza un autobus")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se actualizo el autobus", content = @Content(schema = @Schema(implementation = Bus.class))),
+            @ApiResponse(responseCode = "404", description = "El autobus no existe", content = @Content(schema = @Schema(implementation = Response.class)))
+    })
+    @PostMapping(value = "/modifybus", produces = "application/json", consumes = "application/json")
+    public ResponseEntity<Bus> modifyBus(@RequestBody Bus bus){
+        Integer id = bus.getId();
+        busservice.findById(id)
+                .orElseThrow(() -> new BusNotFoundException(id));
+        logger.info(bus.toString());
+        return new ResponseEntity<>(busservice.save(bus), HttpStatus.CREATED);
+    }
+
+
+
+
     @ExceptionHandler(BusNotFoundException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -122,4 +153,5 @@ public class BusController {
         logger.error(bfe.getMessage(), bfe);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
+
 }
