@@ -54,7 +54,7 @@ public class BusServiceImpl implements BusService{
 
     @Override
     public void deleteById(Integer id) {
-
+        busrepository.deleteById(id);
     }
 
     @Override

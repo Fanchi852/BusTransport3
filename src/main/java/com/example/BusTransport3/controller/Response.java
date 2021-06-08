@@ -9,10 +9,12 @@ import lombok.Data;
 public class Response {
 
     public static final int NO_ERROR = 0;
+    public static final int OK = 200;
     public static final int NOT_FOUND = 404;
     public static final int CONFLICT = 409;
 
     public static final String NO_MESSAGE = "";
+    public static final String OK_MESSAGE = "OPERACION REALIZADA CORRECTAMENTE";
 
     private Error error;
 
@@ -21,6 +23,10 @@ public class Response {
     static class Error {
         private long errorCode;
         private String message;
+    }
+
+    public static Response correctResponse() {
+        return new Response(new Error(OK, OK_MESSAGE));
     }
 
     public static Response noErrorResponse() {
