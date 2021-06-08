@@ -6,13 +6,14 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface LineRepository extends CrudRepository<Line,Integer> {
 
     ArrayList<Line> findAll();
     Optional<Line> findById(Integer id);
-    Line findByName(String name);
+    Set<Line> findByName(String name);
     Line save(Line line);
     void deleteById(Integer id);
     void deleteAll();

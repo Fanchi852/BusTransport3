@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class LineServiceImpl implements LineService{
@@ -25,7 +26,7 @@ public class LineServiceImpl implements LineService{
     }
 
     @Override
-    public Line findByName(String name) {
+    public Set<Line> findByName(String name) {
         return linerepository.findByName(name);
     }
 
@@ -41,7 +42,7 @@ public class LineServiceImpl implements LineService{
 
     @Override
     public void deleteById(Integer id) {
-
+        linerepository.deleteById(id);
     }
 
     @Override

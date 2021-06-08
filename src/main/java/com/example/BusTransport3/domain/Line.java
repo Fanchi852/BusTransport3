@@ -33,7 +33,7 @@ public class Line {
 
     @Schema(description = "estado de la linea", example = "true", required = true)
     @Column
-    private Boolean acctive;
+    private Boolean active;
 
     @Schema(description = "", example = "2015-01-01", required = true)
     @JsonFormat(pattern = "yyyy-MM-dd")
