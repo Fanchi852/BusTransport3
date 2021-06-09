@@ -7,7 +7,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BusTransport3Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BusTransport3Application.class, args);
+
+		try {
+			SpringApplication.run(BusTransport3Application.class, args);
+		}catch (Exception error){
+			System.out.println(error);
+		}
+
 	}
 
 }

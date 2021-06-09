@@ -1,5 +1,6 @@
 package com.example.BusTransport3.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -42,12 +43,11 @@ public class Bus {
     @Schema(description = "cantidad de pasajeros maxima que puede transporta el autobus", example = "80", required = true)
     @Column
     private Integer capacity;
-/*
+
     @ManyToOne()
     @JoinColumn(name = "line_id")
-    @JsonBackReference
     private Line line;
-
+/*
     @OneToMany(mappedBy = "bus")
     @JsonBackReference
     private List<PassengersBusesRelation> passengersbusesrelation;
